@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Escape room 25N: lo que no se ve</title>
 <style>
-:root{--ink:#1c2a3a;--sub:#566473;--or:#2c6a9b;--orbg:#e6eef6;--bg:#f4f6f9;--line:#cdd7e1;--ok:#1d7a4d;--okbg:#e3f3ea;--bad:#b3261e;--badbg:#fbeae9;--head:"Avenir Next","Trebuchet MS","Segoe UI",system-ui,sans-serif}
-@media(prefers-color-scheme:dark){:root{--ink:#e6edf4;--sub:#a5b3c2;--or:#7db3de;--orbg:#1d2c3c;--bg:#121a24;--line:#2d3d4e;--ok:#6fd7a0;--okbg:#14301f;--bad:#ff8f87;--badbg:#3a1a19}}
+:root{--ink:#1b2340;--sub:#56607f;--or:#2f5bea;--orbg:#e8eeff;--bg:#f3f6ff;--line:#d3dbf5;--ok:#1d7a4d;--okbg:#e3f3ea;--bad:#b3261e;--badbg:#fbeae9;--head:"Avenir Next","Trebuchet MS","Segoe UI",system-ui,sans-serif}
+@media(prefers-color-scheme:dark){:root{--ink:#eef1ff;--sub:#aab4d8;--or:#7f9cff;--orbg:#1d2550;--bg:#0e1230;--line:#2c3566;--ok:#6fd7a0;--okbg:#14301f;--bad:#ff8f87;--badbg:#3a1a19}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 main{max-width:660px;margin:0 auto;padding:20px 18px 60px}
@@ -39,7 +39,33 @@ input[type=text],select,textarea{width:100%;padding:10px;border:2px solid var(--
 .chk{display:flex;gap:10px;padding:8px 0;cursor:pointer}.chk input{margin-top:6px;width:20px;height:20px;accent-color:var(--or)}
 .note{font-size:.88rem;color:var(--sub)}
 .chat,.opt{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.ill{display:block;width:100%;max-width:560px;height:auto;margin:0 0 10px}
+.ill{display:block;width:100%;max-width:560px;height:auto;margin:0 0 12px;border-radius:16px;border:2px solid var(--line);background:linear-gradient(160deg,var(--orbg),var(--bg))}
+.r1{--or:#7a3ff2;--orbg:#f0e9ff}.r2{--or:#0b7f8a;--orbg:#e0f7f8}.r3{--or:#d4600a;--orbg:#fff0e1}.r4{--or:#b0286f;--orbg:#fde8f2}
+@media(prefers-color-scheme:dark){.r1{--or:#b794ff;--orbg:#2a1d4d}.r2{--or:#4fd6e0;--orbg:#12383d}.r3{--or:#ffa95c;--orbg:#4a2a12}.r4{--or:#ff8fc4;--orbg:#4a1a33}button:not(.ghost):not(.opt):not(.chat){color:#0e1230}}
+.top{flex-wrap:wrap;border-bottom-width:4px;border-image:linear-gradient(90deg,#2f5bea,#7a3ff2,#0b9aa7,#f08a1c) 1}
+h2{display:inline-block;border-bottom:4px solid var(--or);padding-bottom:2px}
+.hint::before{content:"💡 "}.aviso::before{content:"🫶 "}.ok::before{content:"✅ "}.bad::before{content:"🤔 "}
+button{transition:transform .15s,box-shadow .15s}
+button:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(20,30,80,.22)}
+.chat:hover{transform:none;box-shadow:none;border-color:var(--or)}
+.chat.sel{animation:wig .35s}
+@keyframes wig{30%{transform:scale(1.02) rotate(-.6deg)}60%{transform:scale(1.02) rotate(.6deg)}}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.25)}100%{transform:scale(1);opacity:1}}
+@keyframes bob{50%{transform:translateY(-7px)}}
+@keyframes pulse{50%{transform:scale(1.18)}}
+@keyframes blink{50%{opacity:.2}}
+@keyframes glow{50%{opacity:.3}}
+@keyframes fall{to{transform:translateY(112vh) rotate(360deg)}}
+main>*:not(.reward){animation:in .45s ease both}
+main>*:nth-child(n+3){animation-delay:.08s}main>*:nth-child(n+6){animation-delay:.16s}
+.reward{animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.key.on{animation:pop .6s both}
+.bob{animation:bob 3.5s ease-in-out infinite}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-in-out infinite}
+.dot{animation:blink 1.2s infinite}.glow{animation:glow 2.4s ease-in-out infinite}
+.cf{position:fixed;top:-40px;pointer-events:none;z-index:9;animation:fall linear forwards}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .top strong{font-family:var(--head)}
 dialog{max-width:520px;width:calc(100% - 32px);border:2px solid var(--or);border-radius:12px;background:var(--bg);color:var(--ink);padding:20px}
 dialog::backdrop{background:rgba(20,10,40,.6)}
@@ -56,12 +82,14 @@ dialog::backdrop{background:rgba(20,10,40,.6)}
 <script>
 /* ===== CONFIG: editar por oficina ===== */
 const CONFIG={
- organizacion:"Personal LACRO Panamá",
+ organizacion:"Nuestra oficina",
  canalDenuncia:"Canal confidencial de reporte de la organización (indique aquí correo, línea o enlace)",
+ canalPSEA:"Línea directa (hotline) de la organización y punto focal PSEA de la oficina (indique nombre y contacto)",
+ rutaReferencia:"Ruta de referencia de violencia de género de la zona: servicios y líneas disponibles (indique aquí)",
  recursos:["Línea de emergencia local: indique el número del país","Línea de atención a mujeres víctimas de violencia: indique número o servicio local","Persona focal de género o protección: indique nombre y contacto"]
 };
 /* ===== CONTENIDO ===== */
-const WORDS=["VER","CREER","ACTUAR"];
+const WORDS=["VER","CREER","ACTUAR","PROTEGER"];
 const CHAT=[
  {w:"Jefe de operaciones",t:"Buen informe, Ana. Le diste un toque más femenino, eso se agradece en estos reportes.",bad:1,why:"Sexismo “benevolente”: parece elogio, pero reduce su trabajo a su género."},
  {w:"Mateo",t:"Ana, mañana salimos a las 5 a terreno. Yo manejo, tú descansa.",bad:0,why:"Es logística y cuidado entre colegas, sin condición ni presión."},
@@ -81,6 +109,18 @@ const CASE=[
      {t:"Explicarle el canal confidencial y la protección contra represalias, ayudarla a anotar hechos con fechas y mensajes, y ofrecerte a acompañarla si decide reportar.",f:"Eso es. Información, evidencia a su ritmo y acompañamiento sin tomar su decisión.",b:1},
      {t:"Hablar con el jefe para “arreglarlo entre nosotros” y que baje el tono.",f:"Alertar al agresor puede provocar represalias y borrar la posibilidad de una investigación seria.",b:0}]}
 ];
+const FIELD=[
+ {s:"Estás en una distribución de alimentos en terreno. Al terminar el día, una mujer se acerca en voz baja. Te cuenta que un monitor de una organización socia le pidió “un favor” para mantenerla en la lista, y que no es la primera vez. Añade: “Por favor no le digas a nadie, tengo miedo de perder la asistencia”. ¿Qué haces?",
+  o:[{t:"Preguntarle nombre, fecha, lugar y todos los detalles para armar bien el caso.",f:"Investigar no es tu rol y la obliga a revivir lo ocurrido. Escucha lo que quiera contar y nada más.",b:0},
+     {t:"Decirle que tú te encargas y que hablarás con el monitor para que pare.",f:"Mediar o confrontar puede ponerla en riesgo y dañar una futura investigación. Intenta otra.",b:0},
+     {t:"Escucharla en privado, creerle y no pedir detalles. Decirle con claridad que ningún favor puede condicionar su asistencia, que como personal debes reportar esta preocupación por el canal oficial, y ofrecerle información sobre los servicios disponibles.",f:"Eso es. Transparencia sobre lo que harás, cero presión y información para que ella decida sobre su apoyo.",b:1},
+     {t:"Prometerle secreto total para que se tranquilice.",f:"No puedes cumplirlo: el personal debe reportar de inmediato las sospechas de explotación y abuso sexual. Prometerlo rompería su confianza después.",b:0}]},
+ {s:"La mujer te dice que sí quiere saber qué ayuda existe, pero que no desea hablar con la policía. Ahora tienes que decidir los siguientes pasos. ¿Qué haces?",
+  o:[{t:"Hablar con el monitor y con su organización para “aclarar el malentendido”.",f:"Alertar al presunto responsable puede provocar represalias y comprometer la investigación.",b:0},
+     {t:"Esperar a ver si vuelve a pasar para tener más pruebas.",f:"No hay que esperar pruebas: la obligación es reportar pronto la preocupación o sospecha.",b:0},
+     {t:"Reportar por la línea directa o el punto focal PSEA, sin comentarlo con colegas. Con su consentimiento, conectarla con la ruta de referencia de violencia de género. Respetar si decide no usar un servicio.",f:"Eso es. Son dos vías separadas: reportar es tu obligación, y aceptar un servicio es decisión de ella.",b:1},
+     {t:"Contárselo a todo el equipo de la distribución para que estén atentos.",f:"La información solo viaja por los canales designados. Divulgarla la expone y puede cerrar la puerta a futuras denuncias.",b:0}]}
+];
 const AUDIT=[
  {t:"El único canal de reporte pasa por tu supervisor directo.",a:"Riesgo",w:"Conflicto de interés: quien reporta debe pasar por la persona que puede ser el problema."},
  {t:"Hay una persona focal de género con nombre y canal confidencial conocidos por todo el personal.",a:"Protección",w:"Un canal visible y de confianza es la base de cualquier reporte."},
@@ -91,40 +131,43 @@ const AUDIT=[
 const COMPROMISOS=["No me reiré ni dejaré pasar chistes que normalizan la violencia.","Escucharé sin juzgar y creeré a quien se anime a hablar.","Conoceré el canal de reporte de mi oficina y lo compartiré con mi equipo."];
 /* ===== LÓGICA ===== */
 const app=document.getElementById("app");
-const st={name:"",keys:[false,false,false]};
+const st={name:"",keys:[false,false,false,false]};
 const $=h=>{app.innerHTML=h;window.scrollTo(0,0)};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const AV={"Jefe de operaciones":"👔",Mateo:"🧑",Paola:"👩",Luis:"🧑‍💼"};
 const ILL={
-ice:`<svg class="ill" viewBox="0 0 600 170" role="img" aria-label="Un iceberg: lo visible es solo la punta"><rect y="72" width="600" height="98" fill="var(--orbg)"/><polygon points="215,72 385,72 435,108 392,152 300,166 212,146 170,108" fill="var(--or)" opacity=".55"/><polygon points="250,72 282,28 306,48 336,16 366,72" fill="var(--bg)" stroke="var(--or)" stroke-width="3" stroke-linejoin="round"/><line x1="0" y1="72" x2="600" y2="72" stroke="var(--or)" stroke-width="2"/><text x="400" y="50" font-size="15" fill="var(--sub)" font-family="Georgia,serif" font-style="italic">lo que se ve</text><text x="445" y="132" font-size="15" fill="var(--sub)" font-family="Georgia,serif" font-style="italic">lo que no se ve</text></svg>`,
-chat:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Burbujas de chat"><rect x="30" y="12" width="250" height="34" rx="14" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><rect x="48" y="25" width="150" height="7" rx="3" fill="var(--sub)" opacity=".5"/><rect x="320" y="40" width="250" height="34" rx="14" fill="var(--or)"/><rect x="338" y="53" width="170" height="7" rx="3" fill="#fff" opacity=".8"/><rect x="30" y="68" width="200" height="34" rx="14" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><rect x="48" y="81" width="110" height="7" rx="3" fill="var(--sub)" opacity=".5"/><circle cx="300" cy="86" r="14" fill="var(--bad)"/><text x="300" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="#fff" font-family="sans-serif">!</text></svg>`,
-people:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Dos personas conversando"><circle cx="215" cy="42" r="20" fill="var(--or)"/><rect x="188" y="68" width="54" height="60" rx="26" fill="var(--or)"/><circle cx="385" cy="42" r="20" fill="var(--sub)"/><rect x="358" y="68" width="54" height="60" rx="26" fill="var(--sub)"/><ellipse cx="300" cy="32" rx="36" ry="20" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><circle cx="286" cy="32" r="3.5" fill="var(--or)"/><circle cx="300" cy="32" r="3.5" fill="var(--or)"/><circle cx="314" cy="32" r="3.5" fill="var(--or)"/></svg>`,
-office:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Edificio de oficina y un escudo de protección"><rect x="170" y="14" width="130" height="106" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><g fill="var(--or)" opacity=".6"><rect x="186" y="28" width="22" height="18"/><rect x="224" y="28" width="22" height="18"/><rect x="262" y="28" width="22" height="18"/><rect x="186" y="60" width="22" height="18"/><rect x="224" y="60" width="22" height="18"/><rect x="262" y="60" width="22" height="18"/></g><rect x="226" y="92" width="20" height="28" fill="var(--or)"/><path d="M400 16 L440 29 V62 C440 86 420 98 400 108 C380 98 360 86 360 62 V29 Z" fill="var(--or)"/><polyline points="383,60 396,73 420,46" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-door:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Una puerta que se abre a la luz"><polygon points="300,18 400,0 400,120 300,120" fill="var(--orbg)"/><rect x="250" y="8" width="100" height="112" fill="none" stroke="var(--or)" stroke-width="3"/><polygon points="250,8 304,22 304,120 250,120" fill="var(--or)" opacity=".85"/><circle cx="294" cy="70" r="3.5" fill="#fff"/></svg>`
+ice:`<svg class="ill" viewBox="0 0 600 170" role="img" aria-label="Un iceberg: lo visible es solo la punta"><rect y="72" width="600" height="98" fill="var(--orbg)"/><polygon points="215,72 385,72 435,108 392,152 300,166 212,146 170,108" fill="var(--or)" opacity=".55"/><polygon class="bob" points="250,72 282,28 306,48 336,16 366,72" fill="var(--bg)" stroke="var(--or)" stroke-width="3" stroke-linejoin="round"/><line x1="0" y1="72" x2="600" y2="72" stroke="var(--or)" stroke-width="2"/><text x="400" y="50" font-size="15" fill="var(--sub)" font-family="Georgia,serif" font-style="italic">lo que se ve</text><text x="445" y="132" font-size="15" fill="var(--sub)" font-family="Georgia,serif" font-style="italic">lo que no se ve</text></svg>`,
+chat:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Burbujas de chat"><rect x="30" y="12" width="250" height="34" rx="14" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><rect x="48" y="25" width="150" height="7" rx="3" fill="var(--sub)" opacity=".5"/><rect x="320" y="40" width="250" height="34" rx="14" fill="var(--or)"/><rect x="338" y="53" width="170" height="7" rx="3" fill="#fff" opacity=".8"/><rect x="30" y="68" width="200" height="34" rx="14" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><rect x="48" y="81" width="110" height="7" rx="3" fill="var(--sub)" opacity=".5"/><circle class="pulse" cx="300" cy="86" r="14" fill="var(--bad)"/><text x="300" y="92" text-anchor="middle" font-size="18" font-weight="700" fill="#fff" font-family="sans-serif">!</text></svg>`,
+people:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Dos personas conversando"><circle cx="215" cy="42" r="20" fill="var(--or)"/><rect x="188" y="68" width="54" height="60" rx="26" fill="var(--or)"/><circle cx="385" cy="42" r="20" fill="var(--sub)"/><rect x="358" y="68" width="54" height="60" rx="26" fill="var(--sub)"/><ellipse cx="300" cy="32" rx="36" ry="20" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><circle class="dot" cx="286" cy="32" r="3.5" fill="var(--or)"/><circle class="dot" style="animation-delay:.25s" cx="300" cy="32" r="3.5" fill="var(--or)"/><circle class="dot" style="animation-delay:.5s" cx="314" cy="32" r="3.5" fill="var(--or)"/></svg>`,
+office:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Edificio de oficina y un escudo de protección"><rect x="170" y="14" width="130" height="106" fill="var(--orbg)" stroke="var(--or)" stroke-width="2"/><g fill="var(--or)" opacity=".6"><rect x="186" y="28" width="22" height="18"/><rect x="224" y="28" width="22" height="18"/><rect x="262" y="28" width="22" height="18"/><rect x="186" y="60" width="22" height="18"/><rect x="224" y="60" width="22" height="18"/><rect x="262" y="60" width="22" height="18"/></g><rect x="226" y="92" width="20" height="28" fill="var(--or)"/><path class="pulse" d="M400 16 L440 29 V62 C440 86 420 98 400 108 C380 98 360 86 360 62 V29 Z" fill="var(--or)"/><polyline points="383,60 396,73 420,46" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+field:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Punto de distribución de alimentos y un escudo de protección"><circle cx="520" cy="30" r="16" fill="var(--or)" opacity=".5"/><path d="M0 120 V88 Q150 56 300 88 T600 82 V120 Z" fill="var(--or)" opacity=".3"/><rect x="220" y="62" width="34" height="30" fill="var(--or)"/><rect x="256" y="62" width="34" height="30" fill="var(--or)" opacity=".7"/><rect x="238" y="32" width="34" height="30" fill="var(--or)" opacity=".85"/><circle cx="350" cy="48" r="14" fill="var(--sub)"/><rect x="332" y="66" width="36" height="60" rx="18" fill="var(--sub)"/><circle cx="415" cy="54" r="12" fill="var(--or)"/><rect x="399" y="70" width="32" height="56" rx="16" fill="var(--or)"/><path class="pulse" d="M110 14 L142 25 V52 C142 72 126 82 110 90 C94 82 78 72 78 52 V25 Z" fill="var(--or)"/><polyline points="96,50 106,60 125,38" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+door:`<svg class="ill" viewBox="0 0 600 120" role="img" aria-label="Una puerta que se abre a la luz"><polygon class="glow" points="300,18 400,0 400,120 300,120" fill="var(--orbg)"/><rect x="250" y="8" width="100" height="112" fill="none" stroke="var(--or)" stroke-width="3"/><polygon points="250,8 304,22 304,120 250,120" fill="var(--or)" opacity=".85"/><circle cx="294" cy="70" r="3.5" fill="#fff"/></svg>`
 };
-const pb=`<button class="ghost sm" onclick="document.getElementById('pause').showModal()">Necesito una pausa</button>`;
+function confetti(n){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const E=["✨","🔑","💜","💙","🧡"];for(let i=0;i<n;i++){const e=document.createElement("span");e.className="cf";e.textContent=E[i%E.length];e.style.left=Math.random()*95+"vw";e.style.fontSize=(16+Math.random()*16)+"px";e.style.animationDuration=(2.5+Math.random()*2)+"s";e.style.animationDelay=Math.random()*.8+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),5500)}}
+const pb=`<button class="ghost sm" onclick="document.getElementById('pause').showModal()">🫶 Necesito una pausa</button>`;
 const list=a=>"<ul>"+a.map(r=>`<li>${esc(r)}</li>`).join("")+"</ul>";
 document.getElementById("pauseRes").innerHTML=list(CONFIG.recursos);
-function keys(){document.getElementById("keys").innerHTML=WORDS.map((w,i)=>`<span class="key ${st.keys[i]?"on":""}">${st.keys[i]?w:"llave "+(i+1)}</span>`).join("")}
+function keys(){document.getElementById("keys").innerHTML=WORDS.map((w,i)=>`<span class="key ${st.keys[i]?"on":""}">${st.keys[i]?"🔑 "+w:"🔒 llave "+(i+1)}</span>`).join("")}
 function hintBtn(txt){document.getElementById("h").onclick=()=>{document.getElementById("hb").innerHTML=`<div class="msg hint"><strong>Pista:</strong> ${txt}</div>`}}
 const actions=`<div id="hb"></div><div id="fb"></div>`;
 
-function intro(){
- $(`${ILL.ice}<h1>Lo que no se ve</h1>
+function intro(){document.body.className="";
+ $(`${ILL.ice}<h1>🔎 Lo que no se ve</h1>
  <p>Escape room por el 25N, Día Internacional de la Eliminación de la Violencia contra la Mujer. ${esc(CONFIG.organizacion)}.</p>
- <p>Juegas solo o sola, a tu ritmo y cuando quieras, desde tu casa. Dura unos 5 minutos. No hay cronómetro ni puntaje, y nada de lo que respondas se guarda ni se envía.</p>
- <p>Para salir debes ganar tres llaves: <strong>ver</strong> la violencia que se disfraza de normalidad, <strong>creer</strong> a quien la vive, <strong>actuar</strong> en tu entorno de trabajo.</p>
- <div class="msg hint">Aviso: el contenido trata sobre violencia contra las mujeres. Puedes usar “Necesito una pausa” o cerrar la página en cualquier momento.</div>
+ <p>Juegas solo o sola, a tu ritmo y cuando quieras, desde tu casa. Dura unos 7 minutos. No hay cronómetro ni puntaje, y nada de lo que respondas se guarda ni se envía.</p>
+ <p>Para salir debes ganar cuatro llaves: <strong>ver</strong> la violencia que se disfraza de normalidad, <strong>creer</strong> a quien la vive, <strong>actuar</strong> en tu entorno de trabajo y <strong>proteger</strong> a las comunidades a las que servimos.</p>
+ <div class="msg hint aviso">Aviso: el contenido trata sobre violencia contra las mujeres. Puedes usar “Necesito una pausa” o cerrar la página en cualquier momento.</div>
  <p><label for="n">Tu nombre (opcional, solo aparece en tu constancia final)</label></p>
  <input type="text" id="n" maxlength="50" autocomplete="off">
- <div class="row"><button id="go">Entrar a la sala 1</button>${pb}</div>`);
+ <div class="row"><button id="go">Entrar a la sala 1 🚀</button>${pb}</div>`);
  document.getElementById("go").onclick=()=>{st.name=document.getElementById("n").value.trim();room1()};
 }
 
-function room1(){
- $(`${ILL.chat}<h2>Sala 1: el chat del equipo</h2>
+function room1(){document.body.className="r1";
+ $(`${ILL.chat}<h2>💬 Sala 1: el chat del equipo</h2>
  <p>Esto es parte del grupo de WhatsApp de un equipo de operaciones. Ana, la analista nueva, está en el grupo. <strong>Toca los mensajes que reproducen o ejercen violencia, aunque parezcan amables o en broma.</strong> Ojo: no todos lo son.</p>
- <div class="doc" id="chat">${CHAT.map((m,i)=>`<button class="chat" data-i="${i}" aria-pressed="false"><b>${esc(m.w)}</b>${esc(m.t)}</button>`).join("")}</div>
- ${actions}<div class="row"><button id="chk">Comprobar</button><button class="ghost" id="h">Pedir pista</button>${pb}</div>`);
+ <div class="doc" id="chat">${CHAT.map((m,i)=>`<button class="chat" data-i="${i}" aria-pressed="false"><b>${AV[m.w]||"👤"} ${esc(m.w)}</b>${esc(m.t)}</button>`).join("")}</div>
+ ${actions}<div class="row"><button id="chk">Comprobar ✔️</button><button class="ghost" id="h">💡 Pedir pista</button>${pb}</div>`);
  document.querySelectorAll(".chat").forEach(b=>b.onclick=()=>{const s=b.classList.toggle("sel");b.setAttribute("aria-pressed",s)});
  hintBtn("Hay tres mensajes problemáticos. Fíjate en quién tiene poder, quién lo minimiza y quién calla; y recuerda que un mensaje puede ser incómodo sin una sola palabra explícita.");
  document.getElementById("chk").onclick=()=>{
@@ -135,11 +178,11 @@ function room1(){
  };
 }
 
-function room2(){
+function room2(){document.body.className="r2";
  let i=0;
  function draw(){
   const c=CASE[i];
-  $(`${ILL.people}<h2>Sala 2: el caso de Lucía</h2><p class="note">Decisión ${i+1} de ${CASE.length}</p>
+  $(`${ILL.people}<h2>🤝 Sala 2: el caso de Lucía</h2><p class="note">Decisión ${i+1} de ${CASE.length}</p>
   <div class="case">${esc(c.s)}</div>
   <div id="o">${c.o.map((x,k)=>`<button class="opt" data-k="${k}">${esc(x.t)}</button>`).join("")}</div>
   <div id="fb"></div><div class="row">${pb}</div>`);
@@ -147,51 +190,71 @@ function room2(){
    const x=c.o[b.dataset.k];
    if(!x.b){document.getElementById("fb").innerHTML=`<div class="msg bad">${esc(x.f)}</div>`;return}
    document.getElementById("o").innerHTML="";
-   document.getElementById("fb").innerHTML=`<div class="msg ok">${esc(x.f)}</div><div class="row"><button id="nx">Continuar</button></div>`;
+   document.getElementById("fb").innerHTML=`<div class="msg ok">${esc(x.f)}</div><div class="row"><button id="nx">Continuar ➜</button></div>`;
    document.getElementById("nx").onclick=()=>{i++;i<CASE.length?draw():win(1,"Creer no es resolver ni investigar: es no dejar sola a una persona, respetar su ritmo y proteger su confianza, también cuando no está presente.",[],room3)};
   });
  }
  draw();
 }
 
-function room3(){
- $(`${ILL.office}<h2>Sala 3: la auditoría de tu oficina</h2>
+function room3(){document.body.className="r3";
+ $(`${ILL.office}<h2>🏢 Sala 3: la auditoría de tu oficina</h2>
  <p>Estás revisando cómo funciona una oficina real. Clasifica cada condición como <strong>factor de riesgo</strong> (facilita que la violencia se mantenga oculta) o <strong>factor de protección</strong>.</p>
  ${AUDIT.map((x,i)=>`<div class="item"><div>${esc(x.t)}</div><select id="a${i}" aria-label="Clasificación"><option value="">Elige</option><option>Riesgo</option><option>Protección</option></select></div>`).join("")}
- ${actions}<div class="row"><button id="chk">Comprobar</button><button class="ghost" id="h">Pedir pista</button>${pb}</div>`);
+ ${actions}<div class="row"><button id="chk">Comprobar ✔️</button><button class="ghost" id="h">💡 Pedir pista</button>${pb}</div>`);
  hintBtn("Pregunta en cada caso: ¿esto hace más fácil o más difícil que alguien hable y sea protegido?");
  document.getElementById("chk").onclick=()=>{
   const bad=AUDIT.filter((x,i)=>document.getElementById("a"+i).value!==x.a).length;
   if(bad){document.getElementById("fb").innerHTML=`<div class="msg bad">${bad} sin acertar. Revisa si la condición ayuda a hablar o a callar.</div>`;return}
-  win(2,"Actuar también es cuestionar las estructuras, no solo ayudar a una persona. La violencia se sostiene donde el poder no tiene contrapesos y callar es lo seguro.",AUDIT.map(x=>`${x.t.split(" ").slice(0,6).join(" ")}…: ${x.w}`),final);
+  win(2,"Actuar también es cuestionar las estructuras, no solo ayudar a una persona. La violencia se sostiene donde el poder no tiene contrapesos y callar es lo seguro.",AUDIT.map(x=>`${x.t.split(" ").slice(0,6).join(" ")}…: ${x.w}`),room4);
  };
+}
+
+function room4(){
+ document.body.className="r4";let i=0;
+ function draw(){
+  const c=FIELD[i];
+  $(`${ILL.field}<h2>🛡️ Sala 4: en terreno</h2><p class="note">Decisión ${i+1} de ${FIELD.length}</p>
+  ${i==0?`<div class="msg hint">Ojo: la explotación y el abuso sexual (SEA) son los cometidos por personal o socios contra las personas a quienes servimos. El acoso sexual, que viste en las salas anteriores, es entre colegas. Son distintos y tienen reglas distintas.</div>`:""}
+  <div class="case">${esc(c.s)}</div>
+  <div id="o">${c.o.map((x,k)=>`<button class="opt" data-k="${k}">${esc(x.t)}</button>`).join("")}</div>
+  <div id="fb"></div><div class="row">${pb}</div>`);
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+   const x=c.o[b.dataset.k];
+   if(!x.b){document.getElementById("fb").innerHTML=`<div class="msg bad">${esc(x.f)}</div>`;return}
+   document.getElementById("o").innerHTML="";
+   document.getElementById("fb").innerHTML=`<div class="msg ok">${esc(x.f)}</div><div class="row"><button id="nx">Continuar ➜</button></div>`;
+   document.getElementById("nx").onclick=()=>{i++;i<FIELD.length?draw():win(3,"Proteger a una comunidad es separar dos cosas: tu obligación de reportar por el canal oficial y el derecho de la persona a decidir sobre su apoyo. Nunca investigas ni prometes secreto.",["Escuchar sin pedir detalles evita revictimizar.","Reportar pronto y solo por canales designados protege la investigación.","La referencia a servicios siempre requiere el consentimiento de la persona."],final)};
+  });
+ }
+ draw();
 }
 
 function win(i,text,details,next){
  st.keys[i]=true;keys();
  $(`<div class="msg ok">Sala superada</div><p>Ganaste la llave ${i+1}:</p><div class="reward">${WORDS[i]}</div><p>${esc(text)}</p>
  ${details.length?`<details><summary>Por qué (lectura rápida)</summary>${list(details)}</details>`:""}
- <div class="row"><button id="n">Continuar</button></div>`);
- document.getElementById("n").onclick=next;
+ <div class="row"><button id="n">Continuar ➜</button></div>`);
+ document.getElementById("n").onclick=next;confetti(10);
 }
 
-function final(){
- $(`${ILL.door}<h2>La puerta final</h2><p>Tienes las tres llaves. Úsalas para salir.</p>
+function final(){document.body.className="";
+ $(`${ILL.door}<h2>🚪 La puerta final</h2><p>Tienes las cuatro llaves. Úsalas para salir.</p>
  <div class="reward">${WORDS.join(" · ")}</div>
- <div class="row"><button id="o">Abrir la puerta</button>${pb}</div>`);
+ <div class="row"><button id="o">🔑 Abrir la puerta</button>${pb}</div>`);
  document.getElementById("o").onclick=end;
 }
 
-function end(){
+function end(){document.body.className="";
  const d=new Date().toLocaleDateString("es",{day:"numeric",month:"long",year:"numeric"});
- $(`<h1>Saliste de la sala</h1>
+ $(`<h1>🧡 Saliste de la sala</h1>
  <div class="msg ok"><strong>Constancia</strong><br>${esc(st.name||"Participante")} completó “Lo que no se ve” por el 25N el ${d}.</div>
- <h2>La puerta real sigue abierta</h2>
+ <h2>🌅 La puerta real sigue abierta</h2>
  <p>Nadie escapa de la violencia solo. Elige al menos un compromiso para esta semana:</p>
  ${COMPROMISOS.map(c=>`<label class="chk"><input type="checkbox"><span>${esc(c)}</span></label>`).join("")}
- <h2>Dónde reportar y pedir apoyo</h2>
- <p><strong>En el trabajo:</strong> ${esc(CONFIG.canalDenuncia)}</p>${list(CONFIG.recursos)}
- <p class="note">Este juego no guarda ni envía datos. Si quieres compartir tu constancia, toma una captura de pantalla.</p>`);
+ <h2>📞 Dónde reportar y pedir apoyo</h2>
+ <p><strong>En el trabajo (acoso, abuso de autoridad):</strong> ${esc(CONFIG.canalDenuncia)}</p><p><strong>Explotación y abuso sexual (SEA):</strong> ${esc(CONFIG.canalPSEA)}</p><p><strong>Referencia de sobrevivientes:</strong> ${esc(CONFIG.rutaReferencia)}</p>${list(CONFIG.recursos)}
+ <p class="note">Este juego no guarda ni envía datos. Si quieres compartir tu constancia, toma una captura de pantalla.</p>`);confetti(36);
 }
 keys();intro();
 </script>
